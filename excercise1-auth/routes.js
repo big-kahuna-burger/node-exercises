@@ -6,13 +6,13 @@ const config = require('./config')
 
 module.exports = function (app) {
   app.post('/register', function (req, res) {
-    User.register(new User({ username: req.body.username }), req.body.password, function (err, user) {
+    User.register(new User({username: req.body.username}), req.body.password, function (err, user) {
       if (err) {
-        return res.json({ success: false })
+        return res.status(422).json({message: 'Please provide username and password'})
       }
 
       const token = jwt.encode(user, config.secret)
-      return res.json({ success: true, token: token })
+      return res.status(200).json({token: token})
     })
   })
 
