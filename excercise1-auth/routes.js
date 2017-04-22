@@ -6,7 +6,7 @@ const config = require('./config')
 
 module.exports = function (app) {
   app.post('/register', function (req, res) {
-    User.register(new User({username: req.body.username}), req.body.password, function (err, user) {
+    return User.register(new User({username: req.body.username}), req.body.password, function (err, user) {
       if (err) {
         return res.status(422).json({message: 'Please provide username and password'})
       }
@@ -20,7 +20,7 @@ module.exports = function (app) {
     function (req, res) {
       let token = req.headers.authorization.split(' ')[1]
       const user = jwt.decode(token, config.secret)
-      res.send({user: user})
+      return res.send({user: user})
     }
   )
 }

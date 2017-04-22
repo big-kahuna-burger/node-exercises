@@ -33,15 +33,9 @@ app.use(morgan('dev'))
 app.use(passport.initialize())
 
 passport.use(new JwtStrategy(opts, function (jwtPayload, done) {
-  User.findOne({id: jwtPayload.id}, function (err, user) {
-    if (err) {
-      return done(err, false)
-    }
-    if (user) {
-      done(null, user)
-    } else {
-      done(null, false)
-    }
+  return User.findOne({ id: jwtPayload.id }, function (err, user) {
+    return err ? done(err, false) : done(null, user || false)
+    // its "ok" to do this actually
   })
 }))
 // FOR SERVER RENDERED passport.use(new LocalStrategy(User.authenticate()))
